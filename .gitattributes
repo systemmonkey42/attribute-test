@@ -1,0 +1,8 @@
+
+[attr]base64     filter=base64 diff=base64 merge=base64
+[attr]reverse    filter=rev diff=rev nerge=rev
+[attr]indent     filter=clang-tidy diff=clang-tidy nerge=clang-tidy
+
+*.1   base64
+*.2   reverse
+*.[ch]  indent

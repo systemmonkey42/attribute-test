@@ -1,0 +1,16 @@
+
+[filter "base64"]
+	clean = "base64"
+	smudge = "base64 -d"
+
+[diff "base64"]
+	textconv = "cat"
+
+[filter "rev"]
+	clean = "rev"
+	smudge = "rev"
+
+[diff "rev"]
+	textconv = "cat"
+
+# vim:ft=gitconfig:
