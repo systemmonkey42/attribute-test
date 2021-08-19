@@ -8,8 +8,11 @@ that the attribute configuration cannot be part of the repository.
 As a result of this, you must clone the repository, implement the configuration changes, then check the repository
 out again.
 
-In this example, the config changes will be added to the local `.git/config` files, and the changes implemented
-via `git reset`.
+In this example, the required configuration is in a file called `.gitconfig` at the root of the repository.  You will need
+to configure git to include the `.gitconfig` file by adding an `include` directive to the local git configuration.
+
+For git to implement the changes, the files will needed to be checked out again. This can be done with `git reset`, or
+(depending on git version) removing the affected files (bash.1 and bash.2) and checking them out again with `git checkout -- .`
 
 ## Testing.
 
@@ -17,16 +20,23 @@ via `git reset`.
 
    There are two files in the repository, bash.1 and bash.2.  Both are text files creating via `man bash`
 
+   The file `bash.1` requires `base64` to be converted back to text, while the file `bash.2` requires the linux `rev` command
+   to complete conversion.
+
    `git status` will show a clean repository initially.
 
-   `md5sum bash.?` will produce the following output
+   `md5sum bash.?` will produce the following output showing that the files have not been filtered.
 
        0affa1cca7fa9e4ad27a7da9d48d735e  bash.1
        f2ffc3d825c429a950794fa73afda5f1  bash.2
 
-2. Add the configuation entries in `add_to_git_config` to the local `.git/config` file
+2. Update the local git configuration to include the local `.gitconfig` file at the root of the repository.
 
-	`cat add_to_git_config >> .git/config`
+       git config --local include.path ../.gitconfig
+
+   or
+
+       ./install.sh
 
 3. At this point, git *should* immediately show that the repository is modified.
    `git status` will show that the files `bash.1` and `bash.2` are modified.
@@ -35,16 +45,17 @@ via `git reset`.
 
 4. Re-checkout the branch
 
-		Either
-		`git checkout -- .`
+   Either
 
-		or 
+        git checkout -- .
 
-		`git reset --hard HEAD`
+   or 
 
-	At this point, the two bash files should now be identical.
+        git reset --hard HEAD
 
-      `md5sum bash.?` will now produce the following output.
+    At this point, the two bash files should now be identical.
+
+    `md5sum bash.?` will now produce the following output.
 
         aeedc190af950a99fc0fc3430f341542  bash.1
         aeedc190af950a99fc0fc3430f341542  bash.2
